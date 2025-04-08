@@ -1,5 +1,6 @@
 import pandas as pd
 import numpy as np
+import plotly.express as px
 def medal_tally(df):
     medal_tally=df.drop_duplicates(subset=['Team', 'NOC', 'Games', 'Year', 'City', 'Sport', 'Event', 'Medal'])
     medal_tally = medal_tally.groupby('region').sum()[['Bronze', 'Gold', 'Silver']].sort_values('Gold',
@@ -43,3 +44,10 @@ def fetch_medal_tally(df, year, country):
     x_df['Silver'] =  x_df['Silver'].astype('int')
     x_df['Bronze'] = x_df['Bronze'].astype('int')
     return x_df
+
+def partitioning_nations_over_years(df):
+    nations_over_counttime = df.drop_duplicates(['Year', 'region'])['Year'].value_counts().reset_index().sort_values(
+        'Year')
+    nations_over_counttime.rename(columns={'Year':'Editions','count':'Number of Countries'}, inplace=True)
+    return nations_over_counttime
+
